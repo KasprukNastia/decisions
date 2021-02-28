@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lab2
 {
@@ -18,9 +19,11 @@ namespace Lab2
                     return _characteristic;
 
                 _characteristic = new char[Dimension][];
-                for(int i = 0; i < Dimension; i++)
-                {
+                for (int i = 0; i < Dimension; i++)
                     _characteristic[i] = new char[Dimension];
+
+                for (int i = 0; i < Dimension; i++)
+                {
                     for(int j = i; j < Dimension; j++)
                     {
                         if(Connections[i][j] == 1 && Connections[j][i] == 1)
@@ -86,5 +89,8 @@ namespace Lab2
 
             return lowerSection;
         }
+
+        public override string ToString() =>
+            string.Join(Environment.NewLine, Connections.Select(arr => string.Join(' ', arr)));
     }
 }

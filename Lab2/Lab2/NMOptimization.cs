@@ -43,5 +43,32 @@ namespace Lab2
 
             return bestAlternatives;
         }
+
+        public bool IsBestAlternativesInternallyStable(HashSet<int> bestAlternatives, Relation relation)
+        {
+            foreach(int alternative in bestAlternatives)
+            {
+                if (relation.GetUpperSection(alternative).Intersect(bestAlternatives).Count() > 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public bool IsBestAlternativesExternallyStable(HashSet<int> bestAlternatives, Relation relation)
+        {
+            HashSet<int> notBestAlternatives = 
+                Enumerable.Range(0, relation.Dimension)
+                .Except(bestAlternatives)
+                .ToHashSet();
+
+            foreach (int alternative in notBestAlternatives)
+            {
+                if (relation.GetUpperSection(alternative).Intersect(bestAlternatives).Count() == 0)
+                    return false;
+            }
+
+            return true;
+        }
     }
 }
