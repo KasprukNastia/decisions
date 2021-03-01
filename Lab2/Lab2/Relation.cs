@@ -4,13 +4,27 @@ using System.Linq;
 
 namespace Lab2
 {
+    /// <summary>
+    /// Клас, що описує відношення
+    /// </summary>
     public class Relation
     {
+        /// <summary>
+        /// Зв'язки відношення
+        /// </summary>
         public int[][] Connections { get; }
+
+        /// <summary>
+        /// Розмірність відношення
+        /// </summary>
         public int Dimension { get; }
 
 
         private char[][] _characteristic;
+
+        /// <summary>
+        /// Характеристика відношення у множинах 'I', 'P', 'N'
+        /// </summary>
         public char[][] Characteristic
         {
             get
@@ -66,6 +80,9 @@ namespace Lab2
             }
         }
 
+        /// <summary>
+        /// Отримання верхнього перерізу для вершини vertex
+        /// </summary>
         public HashSet<int> GetUpperSection(int vertex) 
         {
             if (vertex < 0 || vertex >= Dimension)
@@ -81,6 +98,9 @@ namespace Lab2
             return upperSection;
         }
 
+        /// <summary>
+        /// Отримання нижнього перерізу для вершини vertex
+        /// </summary>
         public HashSet<int> GetLowerSection(int vertex)
         {
             if (vertex < 0 || vertex >= Dimension)
@@ -96,9 +116,15 @@ namespace Lab2
             return lowerSection;
         }
 
+        /// <summary>
+        /// Приведення відношення до рядка
+        /// </summary>
         public override string ToString() =>
             string.Join(Environment.NewLine, Connections.Select(arr => string.Join(' ', arr)));
 
+        /// <summary>
+        /// Приведення характеристики відношення до рядка
+        /// </summary>
         public string CharateristicToString() =>
             string.Join(Environment.NewLine, Characteristic.Select(arr => string.Join(' ', arr)));
     }

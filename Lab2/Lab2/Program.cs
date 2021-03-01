@@ -40,7 +40,7 @@ namespace Lab2
                     Console.WriteLine("Опт. альтернативи за принципом К - оптимiзацiї");
                     bestAlternatives = kOptimization.GetK1BestAlternatives(relation);
                     Console.WriteLine($"K = 1: {string.Join(" ", bestAlternatives)}");
-                    bestAlternatives = kOptimization.GetK1OptAlternatives(bestAlternatives, relation);
+                    bestAlternatives = kOptimization.CheckK1OptAlternatives(bestAlternatives, relation);
                     Console.WriteLine($"K = 1 (opt): {string.Join(" ", bestAlternatives)}");
                     bestAlternatives = kOptimization.GetK2BestAlternatives(relation);
                     Console.WriteLine($"K = 2: {string.Join(" ", bestAlternatives)}");
@@ -52,8 +52,6 @@ namespace Lab2
                 Console.WriteLine();
                 Console.WriteLine();
             }
-
-            Console.WriteLine(relations[3].CharateristicToString());
         }
 
         public static List<Relation> ReadAllRelations()
@@ -101,6 +99,19 @@ namespace Lab2
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+        }
+
+        public static void PrintRelationGraph(Relation relation)
+        {
+            for (int i = 0; i < relation.Dimension; i++)
+            {
+                for (int j = 0; j < relation.Dimension; j++)
+                {
+                    if(relation.Connections[i][j] == 1)
+                        Console.WriteLine($"{i} -> {j}");
+                }
+            }
             Console.WriteLine();
         }
     }
