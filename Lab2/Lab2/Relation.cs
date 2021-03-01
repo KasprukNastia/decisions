@@ -31,9 +31,15 @@ namespace Lab2
                         else if(Connections[i][j] == 0 && Connections[j][i] == 0)
                             _characteristic[i][j] = _characteristic[j][i] = 'N';
                         else if (Connections[i][j] == 1 && Connections[j][i] == 0)
+                        {
                             _characteristic[i][j] = 'P';
+                            _characteristic[j][i] = '0';
+                        }  
                         else if (Connections[i][j] == 0 && Connections[j][i] == 1)
+                        {
                             _characteristic[j][i] = 'P';
+                            _characteristic[i][j] = '0';
+                        }
                     }
                 }
 

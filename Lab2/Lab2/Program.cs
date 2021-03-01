@@ -22,7 +22,8 @@ namespace Lab2
             {
                 relation = relations[relationNum - 1];
                 Console.WriteLine($"R{relationNum}{string.Concat(Enumerable.Repeat('-', 50))}");
-                PrintRelation(relation);
+                PrintRelation(relation, () => relation.Connections);
+                PrintRelation(relation, () => relation.Characteristic);
 
                 hasCycle = bfsCycleFinder.HasCycle(relation);
                 Console.WriteLine($"Є ациклiчним: {!hasCycle}");
@@ -82,8 +83,10 @@ namespace Lab2
             return relations;
         }
 
-        public static void PrintRelation(Relation relation)
+        public static void PrintRelation<T>(Relation relation, Func<T[][]> printingSelector)
         {
+            T[][] toPrint = printingSelector();
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"   {string.Join(' ', Enumerable.Range(0, 15))}");
             for(int i = 0; i < relation.Dimension; i++)
@@ -92,8 +95,7 @@ namespace Lab2
                 Console.ForegroundColor = ConsoleColor.White;
                 for(int j = 0; j < relation.Dimension; j++)
                 {
-                    Console.Write($"{relation.Connections[i][j]}{string.Concat(Enumerable.Repeat(' ', (j + 1).ToString().Length))}");
-                    
+                    Console.Write($"{toPrint[i][j]}{string.Concat(Enumerable.Repeat(' ', (j + 1).ToString().Length))}");
                 }
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
