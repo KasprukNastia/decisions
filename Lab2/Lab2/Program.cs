@@ -39,6 +39,8 @@ namespace Lab2
                     Console.WriteLine("Опт. альтернативи за принципом К - оптимiзацiї");
                     bestAlternatives = kOptimization.GetK1BestAlternatives(relation);
                     Console.WriteLine($"K = 1: {string.Join(" ", bestAlternatives)}");
+                    bestAlternatives = kOptimization.GetK1OptAlternatives(bestAlternatives, relation);
+                    Console.WriteLine($"K = 1 (opt): {string.Join(" ", bestAlternatives)}");
                     bestAlternatives = kOptimization.GetK2BestAlternatives(relation);
                     Console.WriteLine($"K = 2: {string.Join(" ", bestAlternatives)}");
                     bestAlternatives = kOptimization.GetK3BestAlternatives(relation);
@@ -49,6 +51,8 @@ namespace Lab2
                 Console.WriteLine();
                 Console.WriteLine();
             }
+
+            Console.WriteLine(relations[3].CharateristicToString());
         }
 
         public static List<Relation> ReadAllRelations()

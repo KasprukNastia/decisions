@@ -92,5 +92,8 @@ namespace Lab2
 
         public override string ToString() =>
             string.Join(Environment.NewLine, Connections.Select(arr => string.Join(' ', arr)));
+
+        public string CharateristicToString() =>
+            string.Join(Environment.NewLine, Characteristic.Select(arr => string.Join(' ', arr)));
     }
 }

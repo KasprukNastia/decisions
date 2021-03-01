@@ -6,24 +6,42 @@ namespace Lab2
 {
     public class KOptimization
     {
+        private static readonly List<char> k1SuitableSetsMarkers = new List<char> { 'I', 'P', 'N' };
+        private static readonly List<char> k2SuitableSetsMarkers = new List<char> { 'P', 'N' };
+        private static readonly List<char> k3SuitableSetsMarkers = new List<char> { 'I', 'P' };
+        private static readonly List<char> k4SuitableSetsMarkers = new List<char> { 'P' };
+
         public HashSet<int> GetK1BestAlternatives(Relation relation)
         {
-            return GetBestAlternatives(relation, new List<char> { 'I', 'P', 'N' });
+            return GetBestAlternatives(relation, k1SuitableSetsMarkers);
         }
 
         public HashSet<int> GetK2BestAlternatives(Relation relation)
         {
-            return GetBestAlternatives(relation, new List<char> { 'P', 'N' });
+            return GetBestAlternatives(relation, k2SuitableSetsMarkers);
         }
 
         public HashSet<int> GetK3BestAlternatives(Relation relation)
         {
-            return GetBestAlternatives(relation, new List<char> { 'I', 'P' });
+            return GetBestAlternatives(relation, k3SuitableSetsMarkers);
         }
 
         public HashSet<int> GetK4BestAlternatives(Relation relation)
         {
-            return GetBestAlternatives(relation, new List<char> { 'P' });
+            return GetBestAlternatives(relation, k4SuitableSetsMarkers);
+        }
+
+        public HashSet<int> GetK1OptAlternatives(HashSet<int> bestAlternatives, Relation relation)
+        {
+            HashSet<int> optAlternatives = new HashSet<int>();
+
+            foreach(int alternative in bestAlternatives)
+            {
+                if (relation.Characteristic[alternative].Where(c => k1SuitableSetsMarkers.Contains(c)).Count() == relation.Dimension)
+                    optAlternatives.Add(alternative);
+            }
+
+            return optAlternatives;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
