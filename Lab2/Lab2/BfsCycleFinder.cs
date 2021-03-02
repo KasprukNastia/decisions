@@ -4,7 +4,9 @@ namespace Lab2
 {
     public class BfsCycleFinder
     {
-        // Пошук циклу у графі за допомогою алгоритму BFS
+        /// <summary>
+        /// Пошук циклу у графі за допомогою алгоритму BFS
+        /// </summary>
         public bool HasCycle(Relation relation)
         {
             // visited - множина для вже пройдених вершин, щоб не повертатися у них
