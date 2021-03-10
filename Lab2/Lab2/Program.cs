@@ -86,7 +86,7 @@ namespace Lab2
             T[][] toPrint = printingSelector();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"   {string.Join(' ', Enumerable.Range(0, 15))}");
+            Console.WriteLine($"   {string.Join(' ', Enumerable.Range(0, relation.Dimension))}");
             for(int i = 0; i < relation.Dimension; i++)
             {
                 Console.Write($"{i}{string.Concat(Enumerable.Repeat(' ', 3 - i.ToString().Length))}");
