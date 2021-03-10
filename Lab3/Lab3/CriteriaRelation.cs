@@ -244,7 +244,7 @@ namespace Lab3
                                 currentBerezovskyRelation.Characteristic[i][j].Equals('I'))
                                 nextBerezovskyRelation[i][j] = nextBerezovskyRelation[j][i] = 1;
                             else
-                                nextBerezovskyRelation[i][j] = nextBerezovskyRelation[j][i] = 0;
+                                nextBerezovskyRelation[i][j] = 0;
                         }
                     }
 
@@ -253,6 +253,25 @@ namespace Lab3
 
                 _BerezovskyRelation = currentBerezovskyRelation;
                 return _BerezovskyRelation;
+            }
+        }
+
+        private Relation _PodinovskyRelation;
+        public Relation PodinovskyRelation
+        {
+            get
+            {
+                if (_PodinovskyRelation != null)
+                    return _PodinovskyRelation;
+
+                int[][] sortedEvaluations = new int[AlternativesCount][];
+                for (int i = 0; i < AlternativesCount; i++)
+                    sortedEvaluations[i] = Evaluations[i].OrderByDescending(e => e).ToArray();
+
+                var podinovskyCriteriaRelation = new CriteriaRelation(sortedEvaluations);
+
+                _PodinovskyRelation = podinovskyCriteriaRelation.ParetoRelation;
+                return _PodinovskyRelation;
             }
         }
 

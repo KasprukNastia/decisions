@@ -24,6 +24,9 @@ namespace Lab3
             Console.WriteLine("Вiдношення Березовського:");
             PrintRelation(criteriaRelation.BerezovskyRelation, () => criteriaRelation.BerezovskyRelation.Connections);
             PrintRelation(criteriaRelation.BerezovskyRelation, () => criteriaRelation.BerezovskyRelation.Characteristic);
+            Console.WriteLine("Вiдношення Подиновського:");
+            PrintRelation(criteriaRelation.PodinovskyRelation, () => criteriaRelation.PodinovskyRelation.Connections);
+            PrintRelation(criteriaRelation.PodinovskyRelation, () => criteriaRelation.PodinovskyRelation.Characteristic);
         }
 
         public static CriteriaRelation ReadCriteriaRelation()
