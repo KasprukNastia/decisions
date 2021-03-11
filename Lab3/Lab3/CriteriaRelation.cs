@@ -4,18 +4,43 @@ using System.Linq;
 
 namespace Lab3
 {
+    /// <summary>
+    /// Клас, що описує значення критеріїв для альтернатив
+    /// </summary>
     public class CriteriaRelation
     {
+        /// <summary>
+        /// Значення критеріїв для альтернатив
+        /// </summary>
         public int[][] Evaluations { get; }
 
+        /// <summary>
+        /// Упорядкована за спаданням важливості множина критеріїв
+        /// </summary>
         public IReadOnlyCollection<int> CriteriasImportance { get; }
 
+        /// <summary>
+        /// Класи впорядковані за зростанням важливості
+        /// </summary>
         public IReadOnlyCollection<IReadOnlyCollection<int>> CriteriasImportancesClasses { get; }
 
+        /// <summary>
+        /// К-сть критеріїв
+        /// </summary>
         public int CriteriasCount { get; }
+
+        /// <summary>
+        /// К-сть альтернатив
+        /// </summary>
         public int AlternativesCount { get; }
 
+        /// <summary>
+        /// Матриця дельта векторів
+        /// </summary>
         private List<int>[][] _deltaVectors;
+        /// <summary>
+        /// Матриця дельта векторів
+        /// </summary>
         public List<int>[][] DeltaVectors
         {
             get
@@ -42,7 +67,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Матриця сигма векторів
+        /// </summary>
         private List<int>[][] _sigmaVectors;
+        /// <summary>
+        /// Матриця сигма векторів
+        /// </summary>
         public List<int>[][] SigmaVectors
         {
             get
@@ -69,7 +100,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Значення критеріїв для альтернатив, упорядковані за спаданням важливості критеріїв
+        /// </summary>
         private CriteriaRelation _sortedCriteriaRelation;
+        /// <summary>
+        /// Значення критеріїв для альтернатив, упорядковані за спаданням важливості критеріїв
+        /// </summary>
         public CriteriaRelation SortedCriteriaRelation
         {
             get
@@ -95,7 +132,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Відношення Парето
+        /// </summary>
         private Relation _paretoRelation;
+        /// <summary>
+        /// Відношення Парето
+        /// </summary>
         public Relation ParetoRelation
         {
             get
@@ -112,6 +155,7 @@ namespace Lab3
                 {
                     for(int j = 0; j < AlternativesCount; j++)
                     {
+                        // альтернатива i переважає j, якщо сигма вектор пари (i,j) не містить значень -1
                         if (SigmaVectors[i][j].Any(elem => elem == -1))
                             paretoRelation[i][j] = 0;
                         else
@@ -124,7 +168,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Мажоритарне відношення
+        /// </summary>
         private Relation _majorityRelation;
+        /// <summary>
+        /// Мажоритарне відношення
+        /// </summary>
         public Relation MajorityRelation
         {
             get
@@ -141,6 +191,7 @@ namespace Lab3
                 {
                     for (int j = 0; j < AlternativesCount; j++)
                     {
+                        // альтернатива i переважає j, якщо сума елементів вектору сигма більша нуля
                         if (SigmaVectors[i][j].Sum() > 0)
                             majorityRelation[i][j] = 1;
                         else
@@ -153,7 +204,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Лексикографічне відношення
+        /// </summary>
         private Relation _lexicographicRelation;
+        /// <summary>
+        /// Лексикографічне відношення
+        /// </summary>
         public Relation LexicographicRelation
         {
             get
@@ -172,7 +229,9 @@ namespace Lab3
                     {
                         foreach(int elem in SortedCriteriaRelation.SigmaVectors[i][j])
                         {
-                            if(elem == 0)
+                            // альтернатива i переважає j, якщо сигма вектор має на своєму початку 
+                            // будь-яку кількість нулів, а потім одиницю
+                            if (elem == 0)
                                 continue;
                             if(elem == 1)
                                 lexicographicRelation[i][j] = 1;
@@ -188,7 +247,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Відношення Березовського
+        /// </summary>
         private Relation _BerezovskyRelation;
+        /// <summary>
+        /// Відношення Березовського
+        /// </summary>
         public Relation BerezovskyRelation
         {
             get
@@ -201,6 +266,7 @@ namespace Lab3
 
                 int[][] sortedEvaluations;
                 int counter;
+                // Формування CriteriaRelation для кожного з класів CriteriasImportancesClasses
                 foreach (IReadOnlyCollection<int> criteriaClass in CriteriasImportancesClasses)
                 {
                     sortedEvaluations = new int[AlternativesCount][];
@@ -220,8 +286,9 @@ namespace Lab3
                 Relation currentBerezovskyRelation = criteriaRelationsByClasses.First().ParetoRelation;
                 List<char> possibleCharacteristics = new List<char> { 'P', 'N', 'I' };
                 Relation currentClassParetoRelation;
-                int[][] nextBerezovskyRelation;                
-                for(int criteriaClass = 1; criteriaClass < criteriaRelationsByClasses.Count; criteriaClass++)
+                int[][] nextBerezovskyRelation;
+                // Ітераційний процес для формування відношення Березовського
+                for (int criteriaClass = 1; criteriaClass < criteriaRelationsByClasses.Count; criteriaClass++)
                 {
                     currentClassParetoRelation = criteriaRelationsByClasses[criteriaClass].ParetoRelation;
                     nextBerezovskyRelation = new int[AlternativesCount][];
@@ -257,7 +324,13 @@ namespace Lab3
             }
         }
 
+        /// <summary>
+        /// Відношення Подиновського
+        /// </summary>
         private Relation _PodinovskyRelation;
+        /// <summary>
+        /// Відношення Подиновського
+        /// </summary>
         public Relation PodinovskyRelation
         {
             get
@@ -265,12 +338,14 @@ namespace Lab3
                 if (_PodinovskyRelation != null)
                     return _PodinovskyRelation;
 
+                // Сортування значень критеріїв для кожної з альтернатив
                 int[][] sortedEvaluations = new int[AlternativesCount][];
                 for (int i = 0; i < AlternativesCount; i++)
                     sortedEvaluations[i] = Evaluations[i].OrderByDescending(e => e).ToArray();
 
                 var podinovskyCriteriaRelation = new CriteriaRelation(sortedEvaluations);
 
+                // Отримання відношення Парето для відсортованих критеріїв
                 _PodinovskyRelation = podinovskyCriteriaRelation.ParetoRelation;
                 return _PodinovskyRelation;
             }
