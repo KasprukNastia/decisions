@@ -241,7 +241,8 @@ namespace Lab3
                                 nextBerezovskyRelation[j][i] = 0;
                             }
                             else if (currentClassParetoRelation.Characteristic[i][j].Equals('I') &&
-                                currentBerezovskyRelation.Characteristic[i][j].Equals('I'))
+                                currentBerezovskyRelation.Characteristic[i][j].Equals('I') &&
+                                criteriaClass != criteriaRelationsByClasses.Count - 1)
                                 nextBerezovskyRelation[i][j] = nextBerezovskyRelation[j][i] = 1;
                             else
                                 nextBerezovskyRelation[i][j] = 0;

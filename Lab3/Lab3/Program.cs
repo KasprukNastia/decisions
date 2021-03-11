@@ -27,6 +27,8 @@ namespace Lab3
             Console.WriteLine("Вiдношення Подиновського:");
             PrintRelation(criteriaRelation.PodinovskyRelation, () => criteriaRelation.PodinovskyRelation.Connections);
             PrintRelation(criteriaRelation.PodinovskyRelation, () => criteriaRelation.PodinovskyRelation.Characteristic);
+
+            WriteResults(criteriaRelation);
         }
 
         public static CriteriaRelation ReadCriteriaRelation()
@@ -55,6 +57,27 @@ namespace Lab3
                 };
 
             return new CriteriaRelation(relation, criteriasImportance, criteriasImportancesClasses);
+        }
+
+        public static void WriteResults(CriteriaRelation criteriaRelation)
+        {
+            string directoryPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            string fileName = $"{directoryPath}\\Var11-КаспрукАнастасія.txt";
+
+            File.AppendAllLines(fileName,
+                new List<string>
+                {
+                    "1",
+                    criteriaRelation.ParetoRelation.ToString(),
+                    "2",
+                    criteriaRelation.MajorityRelation.ToString(),
+                    "3",
+                    criteriaRelation.LexicographicRelation.ToString(),
+                    "4",
+                    criteriaRelation.BerezovskyRelation.ToString(),
+                    "5",
+                    criteriaRelation.PodinovskyRelation.ToString(),
+                });
         }
 
         public static void PrintRelation<T>(Relation relation, Func<T[][]> printingSelector)
