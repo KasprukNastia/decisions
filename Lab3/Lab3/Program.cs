@@ -10,8 +10,8 @@ namespace Lab3
         static void Main(string[] args)
         {
             CriteriaRelation criteriaRelation = ReadCriteriaRelation();
-            Console.WriteLine("Сигма вектори:");
-            PrintCriteriaRelationVectors(criteriaRelation, () => criteriaRelation.SigmaVectors);
+            //Console.WriteLine("Сигма вектори:");
+            //PrintCriteriaRelationVectors(criteriaRelation, () => criteriaRelation.SigmaVectors);
             Console.WriteLine("Вiдношення Парето:");
             PrintRelation(criteriaRelation.ParetoRelation, () => criteriaRelation.ParetoRelation.Connections);
             PrintRelation(criteriaRelation.ParetoRelation, () => criteriaRelation.ParetoRelation.Characteristic);
@@ -63,6 +63,8 @@ namespace Lab3
         {
             string directoryPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
             string fileName = $"{directoryPath}\\Var11-КаспрукАнастасія.txt";
+
+            File.WriteAllText(fileName, string.Empty);
 
             File.AppendAllLines(fileName,
                 new List<string>
