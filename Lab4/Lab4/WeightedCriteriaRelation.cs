@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Lab4
 {
+    /// <summary>
+    /// Клас, що описує зважене критеріальне відношення
+    /// </summary>
     public class WeightedCriteriaRelation
     {
         /// <summary>
@@ -11,6 +14,9 @@ namespace Lab4
         /// </summary>
         public int[][] Evaluations { get; }
 
+        /// <summary>
+        /// Ваги критеріїв
+        /// </summary>
         public IReadOnlyList<double> Weights { get; }
 
         /// <summary>
@@ -23,8 +29,14 @@ namespace Lab4
         /// </summary>
         public int AlternativesCount { get; }
 
+        /// <summary>
+        /// Порогове значення індекса узгодження
+        /// </summary>
         public double C { get; }
-        
+
+        /// <summary>
+        /// Порогове значення індекса неузгодження
+        /// </summary>
         public double D { get; }
 
         /// <summary>
@@ -60,7 +72,13 @@ namespace Lab4
             }
         }
 
+        /// <summary>
+        /// Матриця індексів узгодження
+        /// </summary>
         private double[][] _cRelation;
+        /// <summary>
+        /// Матриця індексів узгодження
+        /// </summary>
         public double[][] CRelation
         {
             get
@@ -90,7 +108,13 @@ namespace Lab4
             }
         }
 
+        /// <summary>
+        /// Матриця індексів неузгодження
+        /// </summary>
         private double[][] _dRelation;
+        /// <summary>
+        /// Матриця індексів неузгодження
+        /// </summary>
         public double[][] DRelation
         {
             get
@@ -117,7 +141,13 @@ namespace Lab4
             }
         }
 
+        /// <summary>
+        /// Відношення для порогових значень C, D
+        /// </summary>
         private Relation _bestRelation;
+        /// <summary>
+        /// Відношення для порогових значень C, D
+        /// </summary>
         public Relation BestRelation
         {
             get
@@ -144,7 +174,13 @@ namespace Lab4
             }
         }
 
+        /// <summary>
+        /// Ядро відношення
+        /// </summary>
         private HashSet<int> _core;
+        /// <summary>
+        /// Ядро відношення
+        /// </summary>
         public IReadOnlyCollection<int> Core
         {
             get
@@ -192,6 +228,9 @@ namespace Lab4
             D = d;
         }
 
+        /// <summary>
+        /// Отримання індексу неузгодження для пари альтернатив на базі дельта вектору
+        /// </summary>
         private double GetDValue(List<int> deltaVector)
         {
             var indices = new List<int>();
@@ -211,6 +250,9 @@ namespace Lab4
             return Math.Round(nominator / denominator, 3, MidpointRounding.AwayFromZero);
         }
 
+        /// <summary>
+        /// Отримання різниці між найбільшим та найментим значенням для критерію
+        /// </summary>
         private int GetDeltaForCriteria(int criteria)
         {
             int[] criteriaValues = new int[AlternativesCount];
