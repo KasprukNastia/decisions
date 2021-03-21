@@ -188,12 +188,18 @@ namespace Lab4
                 if (_core != null)
                     return _core;
 
-                var optimizator = new NMOptimization();
-                _core = optimizator.GetBestAlternatives(BestRelation).OrderBy(e => e).ToHashSet();
+                var bfsCycleFinder = new BfsCycleFinder();
+                if (bfsCycleFinder.HasCycle(BestRelation))
+                    _core = new HashSet<int>();
+                else
+                {
+                    var optimizator = new NMOptimization();
+                    _core = optimizator.GetBestAlternatives(BestRelation).OrderBy(e => e).ToHashSet();
 
-                if (!optimizator.IsBestAlternativesInternallyStable(_core, BestRelation) ||
-                    !optimizator.IsBestAlternativesExternallyStable(_core, BestRelation))
-                    throw new InvalidOperationException("Error in core calculation");
+                    if (!optimizator.IsBestAlternativesInternallyStable(_core, BestRelation) ||
+                        !optimizator.IsBestAlternativesExternallyStable(_core, BestRelation))
+                        throw new InvalidOperationException("Error in core calculation");
+                }
 
                 return _core;
             }
