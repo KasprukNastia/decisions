@@ -158,14 +158,14 @@ namespace Lab5
             }
         }
 
-        private List<double> _c;
-        public List<double> C
+        private List<(int alternative, double closennes)> _c;
+        public List<(int alternative, double closennes)> C
         {
             get
             {
                 if(_c == null)
-                    _c = DToNIS.Select((dToNis, alternative) => dToNis / (DToPIS[alternative] + dToNis))
-                        .OrderByDescending(e => e)
+                    _c = DToNIS.Select((dToNis, alternative) => (alternative, dToNis / (DToPIS[alternative] + dToNis)))
+                        .OrderByDescending(elem => elem.Item2)
                         .ToList();
                 return _c;
             }
