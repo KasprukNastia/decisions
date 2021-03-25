@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Lab5
 {
+    /// <summary>
+    /// Клас, що описує метод TOPSIS
+    /// </summary>
     public class TOPSIS
     {
         /// <summary>
@@ -37,7 +39,13 @@ namespace Lab5
         /// </summary>
         public int AlternativesCount { get; }
 
+        /// <summary>
+        /// Нормалізовані оцінки альтернатив
+        /// </summary>
         private double[][] _normalizedEvaluations;
+        /// <summary>
+        /// Нормалізовані оцінки альтернатив
+        /// </summary>
         public double[][] NormalizedEvaluations
         {
             get
@@ -53,7 +61,13 @@ namespace Lab5
             }
         }
 
+        /// <summary>
+        /// Зважені нормалізовані оцінки альтернатив
+        /// </summary>
         private double[][] _weightedNormalizedEvaluations;
+        /// <summary>
+        /// Зважені нормалізовані оцінки альтернатив
+        /// </summary>
         public double[][] WeightedNormalizedEvaluations
         {
             get
@@ -74,8 +88,14 @@ namespace Lab5
             }
         }
 
-        private List<double> _pis;
-        public List<double> PIS
+        /// <summary>
+        /// Утопічна точка
+        /// </summary>
+        private IReadOnlyList<double> _pis;
+        /// <summary>
+        /// Утопічна точка
+        /// </summary>
+        public IReadOnlyList<double> PIS
         {
             get
             {
@@ -95,8 +115,14 @@ namespace Lab5
             }
         }
 
-        private List<double> _nis;
-        public List<double> NIS
+        /// <summary>
+        /// Антиутопічна точка
+        /// </summary>
+        private IReadOnlyList<double> _nis;
+        /// <summary>
+        /// Антиутопічна точка
+        /// </summary>
+        public IReadOnlyList<double> NIS
         {
             get
             {
@@ -116,8 +142,14 @@ namespace Lab5
             }
         }
 
-        private List<double> _dToPis;
-        public List<double> DToPIS
+        /// <summary>
+        /// Відстані до утопічної точки
+        /// </summary>
+        private IReadOnlyList<double> _dToPis;
+        /// <summary>
+        /// Відстані до утопічної точки
+        /// </summary>
+        public IReadOnlyList<double> DToPIS
         {
             get
             {
@@ -137,8 +169,14 @@ namespace Lab5
             }
         }
 
-        private List<double> _dToNis;
-        public List<double> DToNIS
+        /// <summary>
+        /// Відстані до антиутопічної точки
+        /// </summary>
+        private IReadOnlyList<double> _dToNis;
+        /// <summary>
+        /// Відстані до антиутопічної точки
+        /// </summary>
+        public IReadOnlyList<double> DToNIS
         {
             get
             {
@@ -158,8 +196,14 @@ namespace Lab5
             }
         }
 
-        private List<(int alternative, double closennes)> _c;
-        public List<(int alternative, double closennes)> C
+        /// <summary>
+        /// Наближеності до утопічної точки
+        /// </summary>
+        private IReadOnlyList<(int alternative, double closennes)> _c;
+        /// <summary>
+        /// Наближеності до утопічної точки
+        /// </summary>
+        public IReadOnlyList<(int alternative, double closennes)> C
         {
             get
             {
@@ -172,9 +216,9 @@ namespace Lab5
         }
 
         public TOPSIS(int[][] evaluations,
-            List<double> weights,
-            List<int> weightsToMaximize = null,
-            List<int> weightsToMinimize = null)
+            IReadOnlyList<double> weights,
+            IReadOnlyList<int> weightsToMaximize = null,
+            IReadOnlyList<int> weightsToMinimize = null)
         {
             Evaluations = evaluations ?? throw new ArgumentNullException(nameof(evaluations));
 
@@ -197,6 +241,9 @@ namespace Lab5
             WeightsToMinimize = weightsToMinimize;
         }
 
+        /// <summary>
+        /// Обчислення нормалізованих оцінок альтернатив для випадку, коли всі критерії потрібно максимізувати
+        /// </summary>
         private double[][] CalcNormalizedAllMax()
         {
             double[][] normalized = new double[AlternativesCount][];
@@ -215,6 +262,10 @@ namespace Lab5
             return normalized;
         }
 
+        /// <summary>
+        /// Обчислення нормалізованих оцінок альтернатив для випадку, 
+        /// коли частину критеріїв потрібно максимізувати, а частину мінімізувати
+        /// </summary>
         private double[][] CalcNormalizedMinAndMax()
         {
             double[][] normalized = new double[AlternativesCount][];
@@ -236,6 +287,9 @@ namespace Lab5
             return normalized;
         }
 
+        /// <summary>
+        /// Обчислення середнього геометричного для значень критерію
+        /// </summary>
         private double CalcGeometricMeanForCriteria(int criteria)
         {
             double sum = 0;
@@ -246,6 +300,10 @@ namespace Lab5
             return Math.Sqrt(sum);
         }
 
+        /// <summary>
+        /// Обчислення мінімального та максимально значень для критерію
+        /// з початкових оцінок альтернатив
+        /// </summary>
         private (int min, int max) GetMinAndMaxForCriteria(int criteria)
         {
             int[] criteriaValues = new int[AlternativesCount];
@@ -257,6 +315,10 @@ namespace Lab5
             return (criteriaValues.Min(), criteriaValues.Max());
         }
 
+        /// <summary>
+        /// Обчислення мінімального та максимально значень для критерію
+        /// зі зважених оцінок альтернатив
+        /// </summary>
         private (double min, double max) GetMinAndMaxForCriteriaInWeighted(int criteria)
         {
             double[] criteriaValues = new double[AlternativesCount];

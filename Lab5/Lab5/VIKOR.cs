@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Lab5
 {
+    /// <summary>
+    /// Клас, що описує метод VIKOR
+    /// </summary>
     public class VIKOR
     {
         /// <summary>
@@ -12,6 +14,9 @@ namespace Lab5
         /// </summary>
         public int[][] Evaluations { get; }
 
+        /// <summary>
+        /// Значення коефіцієнту V
+        /// </summary>
         public double VCoef { get; }
 
         /// <summary>
@@ -39,7 +44,13 @@ namespace Lab5
         /// </summary>
         public int AlternativesCount { get; }
 
+        /// <summary>
+        /// Нормалізовані оцінки альтернатив
+        /// </summary>
         private double[][] _normalizedEvaluations;
+        /// <summary>
+        /// Нормалізовані оцінки альтернатив
+        /// </summary>
         public double[][] NormalizedEvaluations
         {
             get
@@ -48,7 +59,7 @@ namespace Lab5
                 {
                    _normalizedEvaluations = new double[AlternativesCount][];
 
-                    List<(int min, int max)> minMaxForCriterias = Enumerable.Range(0, CriteriasCount)
+                    IReadOnlyList<(int min, int max)> minMaxForCriterias = Enumerable.Range(0, CriteriasCount)
                         .Select(criteria => GetMinAndMaxForCriteria(criteria)).ToList();
                     for (int i = 0; i < AlternativesCount; i++)
                     {
@@ -64,7 +75,13 @@ namespace Lab5
             }
         }
 
+        /// <summary>
+        /// Зважені нормалізовані оцінки альтернатив
+        /// </summary>
         private double[][] _weightedNormalizedEvaluations;
+        /// <summary>
+        /// Зважені нормалізовані оцінки альтернатив
+        /// </summary>
         public double[][] WeightedNormalizedEvaluations
         {
             get
@@ -85,8 +102,14 @@ namespace Lab5
             }
         }
 
-        private List<(int alternative, double sValue)> _s;
-        public List<(int alternative, double sValue)> S
+        /// <summary>
+        /// Значення S - середні інтервали покращення
+        /// </summary>
+        private IReadOnlyList<(int alternative, double sValue)> _s;
+        /// <summary>
+        /// Значення S - середні інтервали покращення
+        /// </summary>
+        public IReadOnlyList<(int alternative, double sValue)> S
         {
             get
             {
@@ -97,8 +120,14 @@ namespace Lab5
             }
         }
 
-        private List<(int alternative, double rValue)> _r;
-        public List<(int alternative, double rValue)> R
+        /// <summary>
+        /// Значення R - максимальні інтервали покращення
+        /// </summary>
+        private IReadOnlyList<(int alternative, double rValue)> _r;
+        /// <summary>
+        /// Значення R - максимальні інтервали покращення
+        /// </summary>
+        public IReadOnlyList<(int alternative, double rValue)> R
         {
             get
             {
@@ -109,8 +138,14 @@ namespace Lab5
             }
         }
 
-        private List<(int alternative, double qValue)> _q;
-        public List<(int alternative, double qValue)> Q
+        /// <summary>
+        /// Значення Q
+        /// </summary>
+        private IReadOnlyList<(int alternative, double qValue)> _q;
+        /// <summary>
+        /// Значення Q
+        /// </summary>
+        public IReadOnlyList<(int alternative, double qValue)> Q
         {
             get
             {
@@ -128,14 +163,20 @@ namespace Lab5
             }
         }
 
+        /// <summary>
+        /// Значення С1 - прийнята перевага
+        /// </summary>
         private List<int> _c1;
-        public List<int> C1
+        /// <summary>
+        /// Значення С1 - прийнята перевага
+        /// </summary>
+        public IReadOnlyList<int> C1
         {
             get
             {
                 if(_c1 == null)
                 {
-                    List<(int alternative, double qValue)> orderedQ = Q.OrderBy(elem => elem.qValue).ToList();
+                    IReadOnlyList<(int alternative, double qValue)> orderedQ = Q.OrderBy(elem => elem.qValue).ToList();
 
                     _c1 = new List<int>();
                     _c1.Add(orderedQ.First().alternative);
@@ -150,15 +191,21 @@ namespace Lab5
             }
         }
 
+        /// <summary>
+        /// Значення С2 - прийнята стабільність
+        /// </summary>
         private List<int> _c2;
-        public List<int> C2
+        /// <summary>
+        /// Значення С2 - прийнята стабільність
+        /// </summary>
+        public IReadOnlyList<int> C2
         {
             get
             {
                 if (_c2 == null)
                 {
-                    List<(int alternative, double sValue)> orderedS = S.OrderBy(elem => elem.sValue).ToList();
-                    List<(int alternative, double rValue)> orderedR = R.OrderBy(elem => elem.rValue).ToList();
+                    IReadOnlyList<(int alternative, double sValue)> orderedS = S.OrderBy(elem => elem.sValue).ToList();
+                    IReadOnlyList<(int alternative, double rValue)> orderedR = R.OrderBy(elem => elem.rValue).ToList();
 
                     _c2 = new List<int>();
                     foreach(int alternative in C1)
@@ -172,8 +219,14 @@ namespace Lab5
             }
         }
 
-        private List<int> _finalResult;
-        public List<int> FinalResult
+        /// <summary>
+        /// Фінальний результат, що задовольняє обидві умови С1 і С2
+        /// </summary>
+        private IReadOnlyList<int> _finalResult;
+        /// <summary>
+        /// Фінальний результат, що задовольняє обидві умови С1 і С2
+        /// </summary>
+        public IReadOnlyList<int> FinalResult
         {
             get
             {
@@ -185,7 +238,7 @@ namespace Lab5
 
         public VIKOR(int[][] evaluations,
             double vCoef,
-            List<double> weights)
+            IReadOnlyList<double> weights)
         {
             Evaluations = evaluations ?? throw new ArgumentNullException(nameof(evaluations));
 
@@ -209,6 +262,10 @@ namespace Lab5
             Weights = Weights.Select(w => w / weightsSum).ToList();
         }
 
+        /// <summary>
+        /// Обчислення мінімального та максимально значень для критерію
+        /// з початкових оцінок альтернатив
+        /// </summary>
         private (int min, int max) GetMinAndMaxForCriteria(int criteria)
         {
             int[] criteriaValues = new int[AlternativesCount];
