@@ -56,7 +56,7 @@ namespace Lab5
                         for (int j = 0; j < CriteriasCount; j++)
                         {
                             (int min, int max) = minMaxForCriterias[j];
-                            _normalizedEvaluations[i][j] = max - Evaluations[i][j] / (double)(max - min);
+                            _normalizedEvaluations[i][j] = (max - Evaluations[i][j]) / (double)(max - min);
                         }
                     }
                 }
@@ -85,8 +85,8 @@ namespace Lab5
             }
         }
 
-        private List<(int altervative, double sValue)> _s;
-        public List<(int altervative, double sValue)> S
+        private List<(int alternative, double sValue)> _s;
+        public List<(int alternative, double sValue)> S
         {
             get
             {
@@ -97,8 +97,8 @@ namespace Lab5
             }
         }
 
-        private List<(int altervative, double rValue)> _r;
-        public List<(int altervative, double rValue)> R
+        private List<(int alternative, double rValue)> _r;
+        public List<(int alternative, double rValue)> R
         {
             get
             {
@@ -109,8 +109,8 @@ namespace Lab5
             }
         }
 
-        private List<(int altervative, double qValue)> _q;
-        public List<(int altervative, double qValue)> Q
+        private List<(int alternative, double qValue)> _q;
+        public List<(int alternative, double qValue)> Q
         {
             get
             {
@@ -121,7 +121,7 @@ namespace Lab5
                     double sMin = sValues.Min(), sMax = sValues.Max(), rMin = rValues.Min(), rMax = rValues.Max();
                     _q = Enumerable.Range(0, AlternativesCount)
                         .Select(alternative => 
-                            (alternative, VCoef * (S[alternative].sValue - sMax) / (sMin - sMax) + (1 - VCoef) * (R[alternative].rValue - rMax) / (rMin - rMax)))
+                            (alternative, (VCoef * (S[alternative].sValue - sMin) / (sMax - sMin)) + ((1 - VCoef) * (R[alternative].rValue - rMin) / (rMax - rMin))))
                         .ToList();
                 }
                 return _q;
@@ -141,7 +141,7 @@ namespace Lab5
                     _c1.Add(orderedQ.First().alternative);
                     for(int i = 1; i < AlternativesCount; i++)
                     {
-                        if ((orderedQ[i].qValue - orderedQ.First().qValue) < (1 / (AlternativesCount - 1)))
+                        if ((orderedQ[i].qValue - orderedQ.First().qValue) < (1 / (double)(AlternativesCount - 1)))
                             _c1.Add(orderedQ[i].alternative);
                         else break;
                     }
@@ -172,11 +172,20 @@ namespace Lab5
             }
         }
 
+        private List<int> _finalResult;
+        public List<int> FinalResult
+        {
+            get
+            {
+                if(_finalResult == null)
+                    _finalResult = C1.Intersect(C2).ToList();
+                return _finalResult;
+            }
+        }
+
         public VIKOR(int[][] evaluations,
             double vCoef,
-            List<double> weights,
-            List<int> weightsToMaximize = null,
-            List<int> weightsToMinimize = null)
+            List<double> weights)
         {
             Evaluations = evaluations ?? throw new ArgumentNullException(nameof(evaluations));
 
@@ -198,9 +207,6 @@ namespace Lab5
                 throw new ArgumentException("The number of weights does not meet the number of criterias");
             double weightsSum = Weights.Sum();
             Weights = Weights.Select(w => w / weightsSum).ToList();
-
-            WeightsToMaximize = weightsToMaximize;
-            WeightsToMinimize = weightsToMinimize;
         }
 
         private (int min, int max) GetMinAndMaxForCriteria(int criteria)
