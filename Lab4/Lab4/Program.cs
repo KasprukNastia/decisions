@@ -11,8 +11,8 @@ namespace Lab4
         {
             WeightedCriteriaRelation weightedCriteriaRelation = ReadWeightedCriteriaRelation();
             WriteResults(weightedCriteriaRelation);
-            Task21(weightedCriteriaRelation);
-            Task22(weightedCriteriaRelation);
+            //Task21(weightedCriteriaRelation);
+            //Task22(weightedCriteriaRelation);
             Task23(weightedCriteriaRelation);
         }
 
@@ -201,27 +201,27 @@ namespace Lab4
 
         public static void Task23(WeightedCriteriaRelation weightedCriteriaRelation)
         {
-            double c = 0.5;
+            double c = 1;
             weightedCriteriaRelation = new WeightedCriteriaRelation(
                     weightedCriteriaRelation.Evaluations,
                     weightedCriteriaRelation.Weights.ToList(),
                     c: c,
-                    d: 0);
+                    d: 0.001);
 
-            Console.WriteLine($"Для значення c = 0.5, d = 0 розмiр ядра складає {weightedCriteriaRelation.Core.Count}");
+            Console.WriteLine($"Для значення c = 1, d = 0.001 розмiр ядра складає {weightedCriteriaRelation.Core.Count}");
             Console.WriteLine($"Поточне наповнення ядра: {string.Join(' ', weightedCriteriaRelation.Core)}");
             Console.WriteLine();
 
             var bfsCycleFinder = new BfsCycleFinder();
-            List<double> cValues = new List<double>() { 0.5 };
-            List<double> dValues = new List<double>() { 0 };
+            List<double> cValues = new List<double>() { weightedCriteriaRelation.C };
+            List<double> dValues = new List<double>() { weightedCriteriaRelation.D };
             List<int> sizes = new List<int>() { weightedCriteriaRelation.Core.Count };
             IReadOnlyCollection<int> currentCore = weightedCriteriaRelation.Core;
             IEnumerable<int> addedCoreAlternatives;
             IEnumerable<int> removedCoreAlternatives;
-            for (double d = 0.001; d <= 0.5; d = Math.Round(d + 0.001, 3, MidpointRounding.AwayFromZero))
+            for (double d = 0.002; d < 0.5; d = Math.Round(d + 0.001, 3, MidpointRounding.AwayFromZero))
             {
-                c = Math.Round(c + 0.001, 3, MidpointRounding.AwayFromZero);
+                c = Math.Round(c - 0.001, 3, MidpointRounding.AwayFromZero);
 
                 weightedCriteriaRelation = new WeightedCriteriaRelation(
                     weightedCriteriaRelation.Evaluations,
