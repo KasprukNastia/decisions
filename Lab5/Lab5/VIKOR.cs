@@ -25,16 +25,6 @@ namespace Lab5
         public IReadOnlyList<double> Weights { get; }
 
         /// <summary>
-        /// Критерії, які потрібно максимізувати
-        /// </summary>
-        public IReadOnlyList<int> WeightsToMaximize { get; }
-
-        /// <summary>
-        /// Критерії, які потрібно мінімізувати
-        /// </summary>
-        public IReadOnlyList<int> WeightsToMinimize { get; }
-
-        /// <summary>
         /// К-сть критеріїв
         /// </summary>
         public int CriteriasCount { get; }
